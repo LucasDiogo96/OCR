@@ -1,17 +1,18 @@
-﻿using DTO;
+﻿using Domain;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
 using System.Text;
 using System.Web;
 
-namespace BLL
+namespace Service
 {
-    public class LibraryBLL
+    public class OCRService
     {
-        public static ResponseOCR InitializeOCR(Document document)
+        public  ResponseOCR InitializeOCR(Document document)
         {
             try
             {
@@ -43,15 +44,16 @@ namespace BLL
 
                 var responseString = new StreamReader(response.GetResponseStream());
 
-                return JsonConvert.DeserializeObject<ResponseOCR>(responseString.ReadToEnd());
+                return JsonConvert.DeserializeObject<ResponseOCR>("");
             }
             catch (Exception)
             {
 
                 throw;
             }
-          
+
         }
+        #region Private Methods
         private static string GetEndpoint()
         {
             return "https://api.ocr.space/parse/image";
@@ -63,19 +65,10 @@ namespace BLL
         private static string GetApplication(Document document)
         {
 
-            return String.Concat((document.FileExtension != "PDF" ? "data:image/png;base64," : "data:application/pdf;base64,"),document.Content);
+            return String.Concat((document.FileExtension != "PDF" ? "data:image/png;base64," : "data:application/pdf;base64,"), document.Content);
         }
-        public static string RemoveSpecialCharacters(ref string str)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (char c in str)
-            {
-                if ((c >= '0' && c <= '9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z'))
-                {
-                    sb.Append(c);
-                }
-            }
-            return sb.ToString();
-        }
+        #endregion
+
+
     }
 }

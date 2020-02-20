@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-    
-namespace DTO
+﻿using System.Collections.Generic;
+
+namespace Domain
 {
     public class SpaceLine
     {
